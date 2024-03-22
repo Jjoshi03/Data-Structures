@@ -1,0 +1,104 @@
+// Method 1 : To Down recursive approach
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+//Time Complexity : O(nlogn)
+
+class Solution {
+    private int height(TreeNode root){
+        if(root==null)
+        {
+            return -1;
+        }
+        return 1 + Math.max(height(root.left),height(root.right));
+    }
+    public boolean isBalanced(TreeNode root) {
+        if(root==null)
+        {
+            return true;
+        }
+
+        return Math.abs(height(root.left)-height(root.right))<2 && isBalanced(root.left) && isBalanced(root.right);
+    }
+}
+
+
+
+//Method 2 : Bottom Up recursive approach
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+ //Bottom up recursion
+//Time Complexity : O(n)
+//Space complexity : O(n)
+
+final class TreeInfo
+{
+    public final int height;
+    public final boolean balanced;
+
+    public TreeInfo(int height, boolean balanced)
+    {
+        this.height=height;
+        this.balanced=balanced;
+    }
+}
+
+class Solution {
+    private TreeInfo isBalancedTreeHelper(TreeNode root)
+    {
+        if(root==null)
+        {
+            return new TreeInfo(-1,true);
+        }
+
+        TreeInfo left=isBalancedTreeHelper(root.left);
+        if(!left.balanced)
+        {
+            return new TreeInfo(-1,false);
+        }
+
+        TreeInfo right=isBalancedTreeHelper(root.right);
+        if(!right.balanced)
+        {
+            return new TreeInfo(-1,false);
+        }
+
+        if(Math.abs(left.height-right.height)<2)
+        {
+            return new TreeInfo(Math.max(left.height,right.height)+1,true);
+        }
+        return new TreeInfo(-1,false);
+    }
+    public boolean isBalanced(TreeNode root) {
+        return isBalancedTreeHelper(root).balanced;
+    }
+}
+
+
+
